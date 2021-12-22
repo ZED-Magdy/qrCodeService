@@ -10,28 +10,28 @@ class QrCodeRequest
      * @Assert\NotBlank
      * @Assert\NotNull
      */
-    public ?string $sellerName;
+    private ?string $sellerName;
     /**
      * @Assert\NotBlank
      * @Assert\NotNull
      */
-    public ?string $taxRecord;
+    private ?string $taxRecord;
     /**
      * @Assert\NotBlank
      * @Assert\NotNull
      * @Assert\DateTime(format="Y-m-d h:i A")
      */
-    public ?string $bookingDate;
+    private ?string $bookingDate;
     /**
      * @Assert\NotBlank
      * @Assert\NotNull
      */
-    public ?string $total;
+    private ?string $total;
     /**
      * @Assert\NotBlank
      * @Assert\NotNull
      */
-    public ?string $vat;
+    private ?string $vat;
 
     /**
      * @param string|null $sellerName
