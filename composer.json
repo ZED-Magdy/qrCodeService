@@ -6,6 +6,17 @@
         "nyholm/psr7-server": "^1.0",
         "guzzlehttp/psr7": "^2",
         "laminas/laminas-diactoros": "^2.8",
-        "salla/zatca": "^2.0"
+        "salla/zatca": "^2.0",
+        "symfony/validator": "^5.4",
+        "psr/container": "^1.0.0",
+        "php-di/slim-bridge": "^3.2",
+        "symfony/translation": "^5.4",
+        "doctrine/annotations": "^1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Middleware\\": "Middleware",
+            "Dto\\": "Dto"
+        }
     }
 }
