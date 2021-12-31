@@ -58,17 +58,36 @@ $app->post('/', function (Request $request, Response $response, $args) use ($con
         return $response->withStatus(422)
             ->withHeader('Content-Type', 'application/json');
     }
-    $base64Code = GenerateQrCode::fromArray([
+    if($request->hasHeader('Accept') && 'text/html' == $request->getHeader('Accept')){
+        $resp = renderedQrCode($dto);
+    }else{
+        $resp = base64Encoded($dto);
+    }
+
+    $response->getBody()->write(json_encode(['data' => $resp]));
+    return $response->withHeader('Content-Type', 'application/json');
+})->add(new JsonBodyParserMiddleware());
+
+function base64Encoded(QrCodeRequest $dto): string
+{
+    return GenerateQrCode::fromArray([
         new Seller($dto->getSellerName()),
         new TaxNumber($dto->getTaxRecord()),
         new InvoiceDate((new DateTime($dto->getBookingDate()))->format(DateTimeInterface::ATOM)),
         new InvoiceTotalAmount($dto->getTotal()),
         new InvoiceTaxAmount($dto->getVat())
-        ])->toBase64();
-
-    $response->getBody()->write(json_encode(['data' => $base64Code]));
-    return $response->withHeader('Content-Type', 'application/json');
-})->add(new JsonBodyParserMiddleware());
+    ])->toBase64();
+}
+function renderedQrCode(QrCodeRequest $dto): string
+{
+    return GenerateQrCode::fromArray([
+        new Seller($dto->getSellerName()),
+        new TaxNumber($dto->getTaxRecord()),
+        new InvoiceDate((new DateTime($dto->getBookingDate()))->format(DateTimeInterface::ATOM)),
+        new InvoiceTotalAmount($dto->getTotal()),
+        new InvoiceTaxAmount($dto->getVat())
+    ])->render();
+}
 
 $app->run();
 
