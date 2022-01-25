@@ -58,12 +58,11 @@ $app->post('/', function (Request $request, Response $response, $args) use ($con
         return $response->withStatus(422)
             ->withHeader('Content-Type', 'application/json');
     }
-    if($request->hasHeader('Accept') && 'text/html' == $request->getHeader('Accept')){
+    if($request->hasHeader('Accept') && 'text/html' == $request->getHeader('Accept')[0]){
         $resp = renderedQrCode($dto);
     }else{
         $resp = base64Encoded($dto);
     }
-
     $response->getBody()->write(json_encode(['data' => $resp]));
     return $response->withHeader('Content-Type', 'application/json');
 })->add(new JsonBodyParserMiddleware());
